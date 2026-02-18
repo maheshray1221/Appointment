@@ -5,6 +5,7 @@ import { ApiError } from "../utils/apiError.js"
 import { ApiResponse } from "../utils/apiResponse.js"
 
 
+
 // send cokie
 const options = {
     httpOnly: true,
@@ -67,37 +68,39 @@ const registerUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, "User register successfully", createUser))
 })
 
-// const loginUser = asyncHandler(async (req, res) => {
-//     const { email, password } = req.body
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body
 
-//     if ([email, password].some((field) =>
-//         field?.trim() === "")) {
-//         throw new ApiError(400, "all fields are required");
-//     }
+    if ([email, password].some((field) =>
+        field?.trim() === "")) {
+        throw new ApiError(400, "all fields are required");
+    }
 
-//     const user = await User.findOne({ email })
+    const user = await User.findOne({ email })
 
-//     if (!user) {
-//         throw new ApiError(401, "User not found Please register the user")
-//     }
+    if (!user) {
+        throw new ApiError(401, "User not found Please register the user")
+    }
 
-//     const isPasswordValid = await user.isPasswordCorrect(password)
+    const isPasswordValid = await user.isPasswordCorrect(password)
 
-//     if (!isPasswordValid) {
-//         throw new ApiError(400, "Invalid user cradiatial")
-//     }
-//     const { accessToken, refreshToken } = await generateAccesseAndRefreshToken(user._id)
+    if (!isPasswordValid) {
+        throw new ApiError(400, "Invalid user cradiatial")
+    }
+    const { accessToken, refreshToken } = await generateAccesseAndRefreshToken(user._id)
 
-//     const loginUser = await User.findById(user._id).select("-password -refreshToken")
+    const loginUser = await User.findById(user._id).select("-password -refreshToken")
 
-//     return res
-//         .status(200)
-//         .cookie("accessToken", accessToken, options)
-//         .cookie("refreshToken", refreshToken, options)
-//         .json(new ApiResponse(200, "User successfully loged In", { user: loginUser, accessToken, refreshToken },))
-// })
+    return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(new ApiResponse(200, "User successfully loged In", { user: loginUser, accessToken, refreshToken },))
+})
 
 
 export {
     registerUser,
+    loginUser,
+   
 }
