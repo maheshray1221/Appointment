@@ -8,10 +8,9 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true,
-            lowercase: true,
             trim: true,
-            minlength: [3, "UserName must be minimum 6 character"],
-            maxlength: [25, "UserName must be with in 25 character"],
+            minlength: [3, "Name must be minimum 6 character"],
+            maxlength: [25, "Name must be with in 25 character"],
         },
         email: {
             type: String,
@@ -19,15 +18,16 @@ const userSchema = new mongoose.Schema(
             unique: true,
             lowercase: true,
             trim: true,
-            minlength: [3, "UserName must be minimum 6 character"],
-            maxlength: [40, "UserName must be with in 25 character"],
+            minlength: [5, "Email must be minimum 6 character"],
+            maxlength: [40, "Email must be with in 25 character"],
+            match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email"]
         },
         password: {
             type: String,
             required: true,
             trim: true,
-            minlength: [6, "UserName must be minimum 6 character"],
-            maxlength: [25, "UserName must be with in 25 character"],
+            minlength: [6, "Password must be minimum 6 character"],
+            maxlength: [25, "Password must be with in 25 character"],
         },
         role: {
             type: String,
@@ -59,7 +59,7 @@ userSchema.methods.generateAccessToken = function () {
         {
             //payload
             _id: this.id,
-            username: this.username,
+            name: this.name,
             email: this.email
         },
         // secret
