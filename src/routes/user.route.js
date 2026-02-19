@@ -13,6 +13,7 @@ import {
 } from "../controller/professorController.js";
 import {
     bookAppointment,
+    getAllProfessor,
     getMyAppointemt,
     getProfessorAvailability,
     
@@ -36,6 +37,8 @@ router.route("/availability/:id").delete(verifyJWT, roleAuthorize("professor"), 
 router.route("/student/appointment").post(verifyJWT, roleAuthorize("student"), bookAppointment)
 
 router.route("/student/appointment").get(verifyJWT, roleAuthorize("student"), getMyAppointemt)
+
+router.route("/professor").get(verifyJWT, roleAuthorize("student"), getAllProfessor)
 
 router.route("/availability/:id").get(verifyJWT, roleAuthorize("student"), getProfessorAvailability)
 

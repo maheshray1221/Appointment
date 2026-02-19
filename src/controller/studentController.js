@@ -1,5 +1,6 @@
 import Appointment from "../model/appointment.js";
 import Availability from "../model/availability.js";
+import User from "../model/user.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
@@ -42,6 +43,18 @@ const bookAppointment = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, "Appointment created successfully"))
 })
 
+const getAllProfessor = asyncHandler(async (req, res) => {
+    const allProfessor = await User.find({role:"professor"})
+
+    if (!allProfessor) {
+        throw new ApiError(500, "All Professor are not Show !")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "All Professor show successfully", allProfessor))
+
+})
 const getProfessorAvailability = asyncHandler(async (req, res) => {
 
 })
@@ -61,5 +74,6 @@ const getMyAppointemt = asyncHandler(async (req, res) => {
 export {
     bookAppointment,
     getProfessorAvailability,
+    getAllProfessor,
     getMyAppointemt
 }
