@@ -11,7 +11,12 @@ import {
     setAvailability,
     updateAvailability
 } from "../controller/professorController.js";
-import { bookAppointment } from "../controller/studentController.js";
+import {
+    bookAppointment,
+    getMyAppointemt,
+    getProfessorAvailability,
+    
+} from "../controller/studentController.js";
 
 
 const router = Router()
@@ -22,10 +27,16 @@ router.route("/login").post(loginUser)
 
 router.route("/availability").post(verifyJWT, roleAuthorize("professor"), setAvailability)
 
-router.route("/appointment").post(verifyJWT, roleAuthorize("student"), bookAppointment)
-
 router.route("/availability/:id").patch(verifyJWT, roleAuthorize("professor"), updateAvailability)
 
 router.route("/availability/:id").delete(verifyJWT, roleAuthorize("professor"), deleteAvailability)
+
+
+// student routes
+router.route("/student/appointment").post(verifyJWT, roleAuthorize("student"), bookAppointment)
+
+router.route("/student/appointment").get(verifyJWT, roleAuthorize("student"), getMyAppointemt)
+
+router.route("/availability/:id").get(verifyJWT, roleAuthorize("student"), getProfessorAvailability)
 
 export default router

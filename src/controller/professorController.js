@@ -87,9 +87,6 @@ const deleteAvailability = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, "destroy operation successfull", destroyAvailabilitySlot))
 
 })
-const getMyAppointments = asyncHandler(async (req, res) => {
-
-})
 
 const updateAppointmentStatus = asyncHandler(async (req, res) => {
 
@@ -99,6 +96,5 @@ export {
     setAvailability,
     updateAvailability,
     deleteAvailability,
-    getMyAppointments,
     updateAppointmentStatus
 }

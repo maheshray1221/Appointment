@@ -46,12 +46,20 @@ const getProfessorAvailability = asyncHandler(async (req, res) => {
 
 })
 
-const getMyAppointemts = asyncHandler(async (req, res) => {
+const getMyAppointemt = asyncHandler(async (req, res) => {
+    const allAppointment = await Appointment.find({ student: req.user._id })
 
+    if (!allAppointment) {
+        throw new ApiError(500, "All Appointment are not found !")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "All Appointment show successfully", allAppointment))
 })
 
 export {
     bookAppointment,
     getProfessorAvailability,
-    getMyAppointemts
+    getMyAppointemt
 }
