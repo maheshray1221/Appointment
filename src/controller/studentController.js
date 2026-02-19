@@ -4,7 +4,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
-const createAppointment = asyncHandler(async (req, res) => {
+const bookAppointment = asyncHandler(async (req, res) => {
     const { availabiltyID } = req.body
 
     console.log("id is:", availabiltyID)
@@ -42,8 +42,16 @@ const createAppointment = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, "Appointment created successfully"))
 })
 
+const getProfessorAvailability = asyncHandler(async (req, res) => {
 
+})
+
+const getMyAppointemts = asyncHandler(async (req, res) => {
+
+})
 
 export {
-    createAppointment
+    bookAppointment,
+    getProfessorAvailability,
+    getMyAppointemts
 }
