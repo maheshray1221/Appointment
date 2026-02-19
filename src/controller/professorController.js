@@ -1,3 +1,4 @@
+import Appointment from "../model/appointment.js";
 import Availability from "../model/availability.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -89,7 +90,28 @@ const deleteAvailability = asyncHandler(async (req, res) => {
 })
 
 const updateAppointmentStatus = asyncHandler(async (req, res) => {
+    const { appointmentId } = req.params;
+    const { status } = req.body
 
+    if (!status) {
+        throw new ApiError(400, "Status field are required");
+    }
+
+    const updateAppointment = await Appointment.findByIdAndUpdate({ _id: appointmentId, professor: req.user._id },
+        {
+            status
+        }, {
+        new: true,
+        runValidators: true
+    })
+
+    if (!updateAppointment) {
+        throw new ApiError(500, "Update Appointment failed")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "Update Appointment successfully", updateAppointment))
 })
 
 export {

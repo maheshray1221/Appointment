@@ -9,6 +9,7 @@ import { roleAuthorize } from "../middleware/roleAuthorize.js";
 import {
     deleteAvailability,
     setAvailability,
+    updateAppointmentStatus,
     updateAvailability
 } from "../controller/professorController.js";
 import {
@@ -31,6 +32,8 @@ router.route("/availability").post(verifyJWT, roleAuthorize("professor"), setAva
 router.route("/availability/:id").patch(verifyJWT, roleAuthorize("professor"), updateAvailability)
 
 router.route("/availability/:id").delete(verifyJWT, roleAuthorize("professor"), deleteAvailability)
+
+router.route("/appointment/:id").patch(verifyJWT, roleAuthorize("professor"), updateAppointmentStatus)
 
 
 // student routes
