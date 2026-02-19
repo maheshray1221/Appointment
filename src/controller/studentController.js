@@ -56,7 +56,21 @@ const getAllProfessor = asyncHandler(async (req, res) => {
 
 })
 const getProfessorAvailability = asyncHandler(async (req, res) => {
+    const {id} = req.params
 
+    if (!id) {
+        throw new ApiError(400, "ID fields required")
+    }
+
+    const professorAvailability = await Availability.find({professor:id})
+
+    if(!professorAvailability){
+        throw new ApiError(500, "Professor Availability are not Show !")
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "Professor Availability show successfully", professorAvailability))
 })
 
 const getMyAppointemt = asyncHandler(async (req, res) => {
