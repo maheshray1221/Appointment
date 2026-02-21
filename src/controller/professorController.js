@@ -89,30 +89,56 @@ const deleteAvailability = asyncHandler(async (req, res) => {
 
 })
 
+// const updateAppointmentStatus = asyncHandler(async (req, res) => {
+//     const { appointmentId } = req.params;
+//     const { status } = req.body
+
+//     if (!status) {
+//         throw new ApiError(400, "Status field are required");
+//     }
+
+//     const updateAppointment = await Appointment.findOneAndUpdate({ _id: appointmentId, professor: req.user._id },
+//         {
+//             status
+//         }
+//     )
+
+//     if (!updateAppointment) {
+//         throw new ApiError(404, "Update Appointment failed")
+//     }
+
+//     return res
+//         .status(200)
+//         .json(new ApiResponse(200, "Update Appointment successfully", updateAppointment))
+// })
+
 const updateAppointmentStatus = asyncHandler(async (req, res) => {
-    const { appointmentId } = req.params;
-    const { status } = req.body
+    const { id } = req.params;
+    const { status } = req.body;
 
     if (!status) {
-        throw new ApiError(400, "Status field are required");
+        throw new ApiError(400, "Status field is required");
     }
 
-    const updateAppointment = await Appointment.findByIdAndUpdate({ _id: appointmentId, professor: req.user._id },
-        {
-            status
-        }, {
-        new: true,
-        runValidators: true
-    })
+    // Optional: status validation
+    if (!["approved", "rejected"].includes(status)) {
+        throw new ApiError(400, "Invalid status value");
+    }
 
-    if (!updateAppointment) {
-        throw new ApiError(500, "Update Appointment failed")
+    const updatedAppointment = await Appointment.findOneAndUpdate(
+        { _id: id, professor: req.user._id }, // filter
+        { status }, // correct update
+        { new: true, runValidators: true }
+    );
+
+    if (!updatedAppointment) {
+        throw new ApiError(404, "Appointment not found or not authorized");
     }
 
     return res
         .status(200)
-        .json(new ApiResponse(200, "Update Appointment successfully", updateAppointment))
-})
+        .json(new ApiResponse(200, "Appointment updated successfully",updatedAppointment,));
+});
 
 export {
     setAvailability,
